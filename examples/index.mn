@@ -1,0 +1,6 @@
+mut i32 a;
+i64 b;
+string name;
+
+i32 num = 99;
+string us = "The project is mando";
