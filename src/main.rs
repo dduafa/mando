@@ -1,6 +1,8 @@
 mod args;
+mod constants;
 mod lexer;
 mod reader;
+mod token;
 use lexer::Lexer;
 use reader::TranslationUnit;
 use std::{env, process};
@@ -11,9 +13,19 @@ fn main() {
         process::exit(1);
     });
 
+    if !cli_args.is_valid_file() {
+        eprintln!(
+            "mando error: {} is not a valid mando file",
+            cli_args.get_filename()
+        );
+        process::exit(1);
+    }
+
     let index = TranslationUnit::new(cli_args.get_filename()).unwrap_or_else(|err| {
         eprintln!("mando error: {}: {}", err, cli_args.get_filename());
         process::exit(1);
     });
-    let _tokenizer = Lexer::new(index.file_content());
+    let mut tokenizer = Lexer::new(index.file_content());
+
+    println!("{:?}", tokenizer.get_tokens());
 }
